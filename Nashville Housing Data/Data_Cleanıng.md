@@ -83,7 +83,6 @@ WHEN CHARINDEX(',', PropertyAddress) > 0 THEN SUBSTRING(PropertyAddress, 1, CHAR
 ELSE PropertyAddress
 END
 
-
 - UPDATE [dbo].[Nashville Housing Data for Data Cleaning]
 SET PropertySplitCity = SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) + 1 , LEN(PropertyAddress))
 ````
@@ -144,7 +143,7 @@ In summary, this query identifies duplicate rows within the "Nashville Housing D
 ALTER TABLE [dbo].[Nashville Housing Data for Data Cleaning]
 DROP COLUMN OwnerAddress, TaxDistrict, PropertyAddress, SaleDate
 ````
-
+In summary, this SQL statement alters the structure of the "Nashville Housing Data for Data Cleaning" table by dropping four columns: "OwnerAddress", "TaxDistrict", "PropertyAddress", and "SaleDate".
 
 
 
