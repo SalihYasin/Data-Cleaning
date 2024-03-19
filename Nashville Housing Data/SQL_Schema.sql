@@ -25,13 +25,26 @@ CREATE TABLE [Nashville Housing Data for Data Cleaning] (
 );
 
 COPY [Nashville Housing Data for Data Cleaning]  (
-	full_name,
-	age,
-	maritial_status,
-	email,
-	phone,
-	full_address,
-	job_title,
-	membership_date)
+	[UniqueID],
+	[ParcelID],
+	[LandUse],
+	[SalePrice],
+	[LegalReference],
+	[SoldAsVacant],
+	[OwnerName],
+	[Acreage],
+	[LandValue],
+	[BuildingValue],
+	[TotalValue],
+	[YearBuilt],
+	[Bedrooms],
+	[FullBath],
+	[HalfBath] ,
+	[PropertySplitAddress],
+	[PropertySplitCity] ,
+	[OwnerSplitAddress],
+	[OwnerSplitCity] ,
+	[OwnerSplitState]
+)
 from 'C:\Users\PLANLAMA\Desktop\Nashville_Housing_Data_for_Data_Cleaning.csv'
 delimiter ',' csv header;
