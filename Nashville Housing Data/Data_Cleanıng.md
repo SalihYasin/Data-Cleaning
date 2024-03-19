@@ -46,7 +46,7 @@ BEFORE :
 | 2013-01-04 00:00:00.000 |   
 
 ````sql
-UPDATE [dbo].[Nashville Housing Data for Data Cleaning]
+UPDATE Nashville_Housing_Data
 SET SaleDate = CONVERT(DATE,SaleDate)
 ````
 
@@ -65,8 +65,8 @@ AFTER :
 ````sql
 UPDATE a
 SET [PropertyAddress] = ISNULL(a.[PropertyAddress], 'No Adress')
-FROM [dbo].[Nashville Housing Data for Data Cleaning] a
-JOIN [dbo].[Nashville Housing Data for Data Cleaning] b
+FROM Nashville_Housing_Data a
+JOIN Nashville_Housing_Data b
   ON a.ParcelID = b.ParcelID
 AND a.UniqueID <> b.UniqueID
 WHERE a.PropertyAddress IS NULL
@@ -75,29 +75,51 @@ In summary, this code is used to replace NULL values in the "PropertyAddress" co
 
 - #### We have a column that clearly indicates the address, but we want to divide them into columns to clearly see the values such as city and address etc. Let's see what we can do for this.
 
+BEFORE : 
+
+| PropertyAddress              |           
+|------------------------------|
+| 1802  STEWART PL NASHVILLE |
+| 2761  ROSEDALE PL NASHVILLE |
+| 224  PEACHTREE ST NASHVILLE |
+| 316  LUTIE ST NASHVILLE |
+| 2626  FOSTER AVE NASHVILLE |
+
+
 ````sql
-- UPDATE [dbo].[Nashville Housing Data for Data Cleaning]
+- UPDATE Nashville_Housing_Data
 SET PropertySplitAddress = 
 CASE
 WHEN CHARINDEX(',', PropertyAddress) > 0 THEN SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) - 1 )
 ELSE PropertyAddress
 END
 
-- UPDATE [dbo].[Nashville Housing Data for Data Cleaning]
+- UPDATE Nashville_Housing_Data
 SET PropertySplitCity = SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) + 1 , LEN(PropertyAddress))
 ````
+
+AFTER : 
+
+| PropertySplitAddress | PropertySplitCity |
+|----------------------|-------------------|
+| 1802  STEWART PL     | NASHVILLE         |
+| 2761  ROSEDALE PL    | NASHVILLE         |
+| 224  PEACHTREE ST    | NASHVILLE         |
+| 316  LUTIE ST        | NASHVILLE         |
+| 2626  FOSTER AVE     | NASHVILLE         |
+
 In summary, these SQL statements are used to split the "PropertyAddress" into separate columns for address and city based on the comma delimiter.
 
 - #### Let's do a similar operation in the [OwnerAddress] column to see it clearly again.
 
 ````sql
-- UPDATE [dbo].[Nashville Housing Data for Data Cleaning]
+- UPDATE Nashville_Housing_Data
 SET OwnerSplitAddress = PARSENAME(REPLACE(OwnerAddress, ',', '.') , 3)
 
-- UPDATE [dbo].[Nashville Housing Data for Data Cleaning]
+- UPDATE Nashville_Housing_Data
 SET OwnerSplitCity = PARSENAME(REPLACE(OwnerAddress, ',', '.') , 2)
 
-- UPDATE [dbo].[Nashville Housing Data for Data Cleaning]
+- UPDATE Nashville_Housing_Data
 SET OwnerSplitState = PARSENAME(REPLACE(OwnerAddress, ',', '.') , 1)
 ````
 In summary, these SQL statements are used to split the "OwnerAddress" into separate columns for address, city, and state based on the comma delimiter and populate the corresponding columns accordingly.
@@ -105,7 +127,7 @@ In summary, these SQL statements are used to split the "OwnerAddress" into separ
 - #### We noticed that some of the yes or no values in the [SoldAsVacant] column are written as "Yes" and some are written as "Y". The same goes for the "NO" values. Let's standardize all the values.
 
 ````sql
-UPDATE [dbo].[Nashville Housing Data for Data Cleaning]
+UPDATE Nashville_Housing_Data
 SET SoldAsVacant = 
 CASE 
 WHEN SoldAsVacant = '1' THEN 'Yes'
@@ -129,7 +151,7 @@ SaleDate,
 LegalReference
 ORDER BY UniqueID) AS row_num
 
-FROM [dbo].[Nashville Housing Data for Data Cleaning])
+FROM Nashville_Housing_Data)
 SELECT *
 FROM RowNumCTE
 WHERE row_num > 1
@@ -140,7 +162,7 @@ In summary, this query identifies duplicate rows within the "Nashville Housing D
 - #### Finally, let's eliminate the columns we don't use so that they don't distract us.
 
 ````sql
-ALTER TABLE [dbo].[Nashville Housing Data for Data Cleaning]
+ALTER TABLE Nashville_Housing_Data
 DROP COLUMN OwnerAddress, TaxDistrict, PropertyAddress, SaleDate
 ````
 In summary, this SQL statement alters the structure of the "Nashville Housing Data for Data Cleaning" table by dropping four columns: "OwnerAddress", "TaxDistrict", "PropertyAddress", and "SaleDate".
