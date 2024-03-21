@@ -1,4 +1,4 @@
-# DATA-CLEANING
+# DATA CLEANING
  
  ## Introduction
  This project has been prepared to give other users an idea about how I can organize data, highlight the desired data and clean unnecessary data using SQL. Feel free to explore the scripts and adapt them for your own projects. Contributions and feedback are welcome!
